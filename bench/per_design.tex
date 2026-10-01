@@ -1,0 +1,53 @@
+%======================================================================
+% OPTION B -- per-design table, sky130, rotated size-class labels
+%======================================================================
+\begin{table*}[t]
+\centering
+\caption{Detailed benchmarking results for the proposed optimizer and comparison against other strategies.}
+\label{tab:perdesign_sky130}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{c l r r r r r r r r r r r}
+\toprule
+  & & & & \multicolumn{3}{c}{Routed WL (\textmu m)} & & \multicolumn{4}{c}{Congestion} & \\
+\cmidrule(lr){5-7}\cmidrule(lr){9-12}
+  Size class & Design & Cells & FFs & \emph{fault} & \emph{basic} & \emph{opt} & $\Delta_{\mathrm{WL}}$ & \emph{skip} & \emph{fault} & \emph{basic} & \emph{opt} & $\Delta_{\mathrm{cong}}$ \\
+\midrule
+\multirow{17}{*}{\rotatebox[origin=c]{90}{\textit{Small}}}
+  & s27   & 13  & 8   & \textemdash   & \textbf{135}  & \textbf{135}  & 0.0\%            & \textbf{0.282} & \textemdash & 0.308 & 0.308 & 0.0\%           \\
+  & s298  & 61  & 23  & 624           & \textbf{352}  & 419           & +19.0\%          & \textbf{0.288} & 0.328       & 0.302 & 0.309 & +2.3\%          \\
+  & s386  & 67  & 20  & 400           & 181           & \textbf{180}  & \textbf{-0.7\%}  & \textbf{0.315} & 0.335       & 0.336 & 0.327 & \textbf{-2.7\%} \\
+  & s420  & 77  & 35  & 485           & 553           & \textbf{441}  & \textbf{-20.2\%} & \textbf{0.292} & 0.322       & 0.319 & 0.311 & \textbf{-2.3\%} \\
+  & s349  & 80  & 35  & 543           & \textbf{511}  & 547           & +7.1\%           & \textbf{0.290} & 0.331       & 0.317 & 0.317 & +0.2\%          \\
+  & s382  & 81  & 30  & 465           & 474           & \textbf{414}  & \textbf{-12.6\%} & \textbf{0.292} & 0.323       & 0.318 & 0.320 & +0.6\%          \\
+  & s344  & 82  & 35  & 471           & \textbf{442}  & \textbf{442}  & 0.0\%            & \textbf{0.292} & 0.342       & 0.328 & 0.328 & +0.2\%          \\
+  & s444  & 85  & 30  & 531           & \textbf{516}  & 546           & +5.7\%           & \textbf{0.306} & 0.323       & 0.330 & 0.321 & \textbf{-2.8\%} \\
+  & s400  & 90  & 30  & 515           & 405           & \textbf{360}  & \textbf{-11.1\%} & \textbf{0.304} & 0.315       & 0.330 & 0.322 & \textbf{-2.5\%} \\
+  & s526  & 95  & 30  & 404           & \textbf{349}  & 367           & +5.1\%           & \textbf{0.285} & 0.316       & 0.323 & 0.316 & \textbf{-2.1\%} \\
+  & s641  & 105 & 76  & 997           & 1.1k          & \textbf{930}  & \textbf{-12.1\%} & \textbf{0.328} & 0.370       & 0.357 & 0.346 & \textbf{-3.1\%} \\
+  & s713  & 105 & 75  & \textbf{801}  & 1.0k          & 925           & \textbf{-10.3\%} & \textbf{0.322} & 0.360       & 0.359 & 0.348 & \textbf{-3.2\%} \\
+  & s1196 & 113 & 28  & 454           & 295           & \textbf{264}  & \textbf{-10.5\%} & \textbf{0.316} & 0.379       & 0.328 & 0.326 & \textbf{-0.6\%} \\
+  & s510  & 117 & 32  & 701           & 429           & \textbf{353}  & \textbf{-17.6\%} & \textbf{0.328} & 0.361       & 0.343 & 0.338 & \textbf{-1.6\%} \\
+  & s820  & 131 & 42  & 956           & 452           & \textbf{421}  & \textbf{-6.9\%}  & \textbf{0.351} & 0.405       & 0.366 & 0.360 & \textbf{-1.6\%} \\
+  & s832  & 139 & 42  & 795           & 503           & \textbf{440}  & \textbf{-12.5\%} & \textbf{0.342} & 0.379       & 0.357 & 0.345 & \textbf{-3.3\%} \\
+  & s838  & 161 & 67  & \textbf{804}  & 1.1k          & 809           & \textbf{-29.6\%} & \textbf{0.298} & 0.332       & 0.325 & 0.325 & +0.1\%          \\
+\cmidrule(lr){1-13}
+\multirow{6}{*}{\rotatebox[origin=c]{90}{\textit{Medium}}}
+  & s953   & 217 & 68  & 2.0k & 1.1k & \textbf{927}   & \textbf{-12.7\%} & \textbf{0.361} & 0.426 & 0.387 & 0.376 & \textbf{-3.0\%} \\
+  & s1196b & 262 & 46  & 549  & \textbf{513}  & 529   & +3.1\%           & \textbf{0.370} & 0.411 & 0.376 & 0.379 & +0.7\%          \\
+  & s1238  & 272 & 46  & \textbf{452}  & 680  & 514   & \textbf{-24.4\%} & \textbf{0.376} & 0.411 & 0.397 & 0.380 & \textbf{-4.2\%} \\
+  & s1423  & 346 & 96  & 1.4k & 1.6k & \textbf{1.3k}  & \textbf{-20.1\%} & \textbf{0.313} & 0.350 & 0.349 & 0.337 & \textbf{-3.2\%} \\
+  & s9234  & 551 & 210 & 6.4k & 5.5k & \textbf{3.8k}  & \textbf{-31.5\%} & \textbf{0.339} & 0.415 & 0.382 & 0.367 & \textbf{-4.0\%} \\
+  & s5378  & 673 & 244 & 5.7k & 5.5k & \textbf{4.9k}  & \textbf{-10.0\%} & \textbf{0.364} & 0.415 & 0.401 & 0.400 & \textbf{-0.2\%} \\
+\cmidrule(lr){1-13}
+\multirow{4}{*}{\rotatebox[origin=c]{90}{\textit{Large}}}
+  & s13207 & 1415 & 697  & 41.9k  & 33.4k  & \textbf{15.1k} & \textbf{-54.9\%} & \textbf{0.380} & 0.565 & 0.479 & 0.428 & \textbf{-10.8\%} \\
+  & s15850 & 1894 & 725  & 41.6k  & 32.6k  & \textbf{14.1k} & \textbf{-56.8\%} & \textbf{0.391} & 0.593 & 0.505 & 0.431 & \textbf{-14.7\%} \\
+  & s38584 & 5526 & 1612 & 249.3k & 144.6k & \textbf{36.6k} & \textbf{-74.7\%} & \textbf{0.394} & 0.729 & 0.547 & 0.436 & \textbf{-20.3\%} \\
+  & s35932 & 5651 & 2083 & 82.7k  & 124.7k & \textbf{50.5k} & \textbf{-59.5\%} & \textbf{0.370} & 0.472 & 0.468 & 0.412 & \textbf{-12.0\%} \\
+\cmidrule(lr){1-13}
+\multirow{1}{*}{\rotatebox[origin=c]{90}{\textit{Real-world}}}
+  & ibex   & 11980 & 2201 & 105.4k & 188.3k & \textbf{60.6k} & \textbf{-67.8\%} & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash \\
+\bottomrule
+\end{tabular}
+\end{table*}

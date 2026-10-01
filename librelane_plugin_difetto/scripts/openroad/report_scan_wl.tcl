@@ -4,22 +4,32 @@ read_current_odb
 puts "=== Total routed wirelength calculation is enabled ==="
 
 # Collect all nets connected to scan-in cell pins — one net per scan chain edge.
+# Nets are gathered as odb dbNet objects (not name strings): scan/boundary-scan
+# nets end up with hierarchical, escaped-bracket names (e.g.
+# 'boot_addr_i.ibsr/rising.bits\[10\]._store_') that OpenSTA's get_nets --
+# used internally by `report_wire_length -net` -- fails to resolve, silently
+# dropping those nets from the sum. report_net_wire_length takes a dbNet
+# object directly, sidestepping that name round-trip entirely.
 set block [ord::get_db_block]
-set scan_net_names {}
+set scan_nets {}
+set seen_nets {}
 foreach inst [$block getInsts] {
   foreach iterm [$inst getITerms] {
     if { [[$iterm getMTerm] getName] eq $::env(SCAN_IN_PIN_NAME) } {
       set net [$iterm getNet]
-      if { $net ne "NULL" } {
-        lappend scan_net_names [$net getName]
+      if { $net ne "NULL" && ![dict exists $seen_nets $net] } {
+        dict set seen_nets $net 1
+        lappend scan_nets $net
       }
     }
   }
 }
-set scan_net_names [lsort -unique $scan_net_names]
 
 set scan_wl_file $::env(STEP_DIR)/scan_chain_wl.rpt
-report_wire_length -net $scan_net_names -detailed_route -file $scan_wl_file
+grt::create_wl_report_file $scan_wl_file 0
+foreach net $scan_nets {
+  grt::report_net_wire_length $net 0 1 0 $scan_wl_file
+}
 
 set scan_total 0.0
 set fp [open $scan_wl_file r]
@@ -29,5 +39,5 @@ while { [gets $fp line] >= 0 } {
   }
 }
 close $fp
-puts "=== Scan chain nets ([llength $scan_net_names] nets) routed wirelength: ${scan_total} um ==="
+puts "=== Scan chain nets ([llength $scan_nets] nets) routed wirelength: ${scan_total} um ==="
 puts "%OL_METRIC_F dft__scan_chain_routed_wl__um $scan_total"

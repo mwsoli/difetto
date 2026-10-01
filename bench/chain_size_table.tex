@@ -1,0 +1,102 @@
+%======================================================================
+% Per-design scan-chain size distributions (basic vs opt), verifying
+% the architect's max-length cap holds after ScanOpt reassignment.
+%======================================================================
+
+\begin{table*}[t]
+\centering
+\caption{Per-chain size distribution (in scan bits) for \emph{basic} vs.\ \emph{opt} on sky130, scan architect cap = 10. $n$ is the number of scan chains constructed by the architect (fixed before \textsc{ScanOpt} runs; unchanged by optimization).}
+\label{tab:chainsize_sky130_fd_sc_hd}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{c l r r r r r r r r}
+\toprule
+  & & & & \multicolumn{3}{c}{\emph{basic}} & \multicolumn{3}{c}{\emph{opt}} \\
+\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+  Size class & Design & Cells & $n$ & min & mean & max & min & mean & max \\
+\midrule
+\multirow{17}{*}{\rotatebox[origin=c]{90}{\textit{Small}}}
+  & s27    &    16 &   1 &  8 &  8.0 & 8 &  8 &  8.0 & 8 \\
+  & s298   &    70 &   3 &  7 &  7.7 & 8 &  7 &  7.7 & 8 \\
+  & s386   &    78 &   2 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s420   &    82 &   4 &  8 &  8.8 & 9 &  8 &  8.8 & 9 \\
+  & s349   &    88 &   4 &  8 &  8.8 & 9 &  8 &  8.8 & 9 \\
+  & s382   &    95 &   3 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s344   &    89 &   4 &  8 &  8.8 & 9 &  8 &  8.8 & 9 \\
+  & s444   &    98 &   3 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s400   &    97 &   3 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s526   &   105 &   3 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s641   &   125 &   8 &  6 &  9.5 & 10 &  9 &  9.5 & 10 \\
+  & s713   &   126 &   8 &  5 &  9.4 & 10 &  8 &  9.4 & 10 \\
+  & s1196  &   121 &   3 &  8 &  9.3 & 10 &  8 &  9.3 & 10 \\
+  & s510   &   137 &   4 &  8 &  8.0 & 8 &  8 &  8.0 & 8 \\
+  & s820   &   151 &   5 &  6 &  8.4 & 9 &  6 &  8.4 & 9 \\
+  & s832   &   158 &   5 &  6 &  8.4 & 9 &  6 &  8.4 & 9 \\
+  & s838   &   169 &   7 &  7 &  9.6 & 10 &  8 &  9.6 & 10 \\
+\cmidrule(lr){1-10}
+\multirow{6}{*}{\rotatebox[origin=c]{90}{\textit{Medium}}}
+  & s953   &   241 &   7 &  8 &  9.7 & 10 &  8 &  9.7 & 10 \\
+  & s1196b &   300 &   5 &  6 &  9.2 & 10 &  7 &  9.2 & 10 \\
+  & s1238  &   301 &   5 &  6 &  9.2 & 10 &  7 &  9.2 & 10 \\
+  & s1423  &   378 &  10 &  6 &  9.6 & 10 &  7 &  9.6 & 10 \\
+  & s9234  &   606 &  21 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s5378  &   719 &  25 &  4 &  9.8 & 10 &  8 &  9.8 & 10 \\
+\cmidrule(lr){1-10}
+\multirow{4}{*}{\rotatebox[origin=c]{90}{\textit{Large}}}
+  & s13207 &  1529 &  70 &  7 & 10.0 & 10 &  9 & 10.0 & 10 \\
+  & s15850 &  2158 &  73 &  5 &  9.9 & 10 &  8 &  9.9 & 10 \\
+  & s38584 &  6650 & 162 &  2 & 10.0 & 10 &  8 & 10.0 & 10 \\
+  & s35932 &  5255 & 209 &  3 & 10.0 & 10 &  8 & 10.0 & 10 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Per-chain size distribution (in scan bits) for \emph{basic} vs.\ \emph{opt} on gf180mcu, scan architect cap = 10. $n$ is the number of scan chains constructed by the architect (fixed before \textsc{ScanOpt} runs; unchanged by optimization).}
+\label{tab:chainsize_gf180mcu_fd_sc_mcu7t5v0}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{c l r r r r r r r r}
+\toprule
+  & & & & \multicolumn{3}{c}{\emph{basic}} & \multicolumn{3}{c}{\emph{opt}} \\
+\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+  Size class & Design & Cells & $n$ & min & mean & max & min & mean & max \\
+\midrule
+\multirow{17}{*}{\rotatebox[origin=c]{90}{\textit{Small}}}
+  & s27    &    16 &   1 &  8 &  8.0 & 8 &  8 &  8.0 & 8 \\
+  & s298   &    70 &   3 &  7 &  7.7 & 8 &  7 &  7.7 & 8 \\
+  & s386   &    78 &   2 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s420   &    82 &   4 &  8 &  8.8 & 9 &  8 &  8.8 & 9 \\
+  & s349   &    88 &   4 &  8 &  8.8 & 9 &  8 &  8.8 & 9 \\
+  & s382   &    95 &   3 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s344   &    89 &   4 &  8 &  8.8 & 9 &  8 &  8.8 & 9 \\
+  & s444   &    98 &   3 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s400   &    97 &   3 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s526   &   105 &   3 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s641   &   125 &   8 &  6 &  9.5 & 10 &  7 &  9.5 & 10 \\
+  & s713   &   126 &   8 &  5 &  9.4 & 10 &  8 &  9.4 & 10 \\
+  & s1196  &   121 &   3 &  8 &  9.3 & 10 &  8 &  9.3 & 10 \\
+  & s510   &   137 &   4 &  8 &  8.0 & 8 &  8 &  8.0 & 8 \\
+  & s820   &   151 &   5 &  6 &  8.4 & 9 &  7 &  8.4 & 9 \\
+  & s832   &   158 &   5 &  6 &  8.4 & 9 &  8 &  8.4 & 9 \\
+  & s838   &   169 &   7 &  7 &  9.6 & 10 &  8 &  9.6 & 10 \\
+\cmidrule(lr){1-10}
+\multirow{6}{*}{\rotatebox[origin=c]{90}{\textit{Medium}}}
+  & s953   &   241 &   7 &  8 &  9.7 & 10 &  8 &  9.7 & 10 \\
+  & s1196b &   300 &   5 &  6 &  9.2 & 10 &  8 &  9.2 & 10 \\
+  & s1238  &   301 &   5 &  6 &  9.2 & 10 &  8 &  9.2 & 10 \\
+  & s1423  &   378 &  10 &  6 &  9.6 & 10 &  6 &  9.6 & 10 \\
+  & s9234  &   606 &  21 & 10 & 10.0 & 10 & 10 & 10.0 & 10 \\
+  & s5378  &   719 &  25 &  4 &  9.8 & 10 &  7 &  9.8 & 10 \\
+\cmidrule(lr){1-10}
+\multirow{4}{*}{\rotatebox[origin=c]{90}{\textit{Large}}}
+  & s13207 &  1529 &  70 &  7 & 10.0 & 10 &  7 & 10.0 & 10 \\
+  & s15850 &  2158 &  73 &  5 &  9.9 & 10 &  9 &  9.9 & 10 \\
+  & s38584 &  6650 & 162 &  2 & 10.0 & 10 &  7 & 10.0 & 10 \\
+  & s35932 &  5255 & 209 &  3 & 10.0 & 10 &  8 & 10.0 & 10 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+% Cap violations found across all 27 designs x 2 PDKs x {basic,opt}: 0

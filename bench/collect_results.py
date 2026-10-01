@@ -20,7 +20,6 @@ cols = [
     "Cell Count",
     "Scannable Elements",
     "Scannable Element Ratio",
-    "Instance Area",
 ]
 for metric in [
     "Worst Slack",
@@ -28,13 +27,12 @@ for metric in [
     "Routing Time",
     "Congestion Score",
     "Scan Chain Routed WL",
+    "Instance Area",
+    "Power Total",
 ]:
     for strat in ["skip", "fault", "basic", "opt"]:
         cols.append(f"{metric} ({strat})")
-    base_strat = "basic" if metric == "Scan Chain Routed WL" else "skip"
-    for strat in ["skip", "fault", "basic", "opt"]:
-        if strat != "skip" and strat != base_strat:
-            cols.append(f"{metric} Impact ({strat})")
+    cols.append(f"{metric} Impact (opt vs basic)")
 cols.append("Routing Threads")
 
 col_by_name = {el: i for i, el in enumerate(cols)}
@@ -95,7 +93,6 @@ for design_dir_raw in sys.argv[1:]:
             synth_run = final_dir.parents[1] / "synth"
             synth_dir = next(synth_run.glob("*-difetto-synthesis"))
         drt_dir = next(final_dir.parent.glob("*-openroad-detailedrouting"))
-        fp_dir = next(final_dir.parent.glob("*-openroad-floorplan"), None)
         sta_dir = next(final_dir.parent.glob("*-openroad-stapostpnr"), None)
         heatmap_dir = next(
             final_dir.parent.glob("*-openroad-dumpcongestionheatmap"),
@@ -115,10 +112,6 @@ for design_dir_raw in sys.argv[1:]:
             dft_dir = next(final_dir.parent.glob("*-difetto-chain"))
             w("Standard Cell Library", drt_conf["STD_CELL_LIBRARY"])
             w("Cell Count", synth_metrics["design__instance__count"])
-            if fp_dir is not None and (fp_dir / "state_out.json").exists():
-                with open(fp_dir / "state_out.json") as f:
-                    fp_metrics = json.load(f)["metrics"]
-                w("Instance Area", fp_metrics.get("design__instance__area__stdcell"))
             w(
                 "Scannable Elements",
                 sum(
@@ -132,11 +125,16 @@ for design_dir_raw in sys.argv[1:]:
             scannable_ref = xl_rowcol_to_cell(row, col_by_name["Scannable Elements"])
             wf("Scannable Element Ratio", f"={scannable_ref}/{cells_ref}")
             w("Routing Threads", drt_conf["DRT_THREADS"])
+        w(
+            f"Instance Area ({strat})",
+            drt_metrics.get("design__instance__area__stdcell"),
+        )
         if sta_dir is not None and (sta_dir / "state_out.json").exists():
             with open(sta_dir / "state_out.json") as f:
                 sta_metrics = json.load(f)["metrics"]
             w(f"Worst Slack ({strat})", sta_metrics.get("timing__setup__wns"))
             w(f"Total Negative Slack ({strat})", sta_metrics.get("timing__setup__tns"))
+            w(f"Power Total ({strat})", sta_metrics.get("power__total"))
         w(
             f"Routing Time ({strat})",
             get_elapsed_drt_time(drt_dir / "openroad-detailedrouting.log"),
@@ -166,35 +164,33 @@ for metric in [
     "Routing Time",
     "Congestion Score",
     "Scan Chain Routed WL",
+    "Instance Area",
+    "Power Total",
 ]:
-    for strat in ["fault", "basic", "opt"]:
-        base_strat = "basic" if metric == "Scan Chain Routed WL" else "skip"
-        if strat == base_strat:
-            continue
-        base = f"{metric} ({base_strat})"
-        ref = f"{metric} ({strat})"
-        calculated = f"{metric} Impact ({strat})"
-        first = xl_rowcol_to_cell(1, col_by_name[calculated])
-        for i in range(1, row + 1):
-            base_cell = xl_rowcol_to_cell(i, col_by_name[base])
-            strat_cell = xl_rowcol_to_cell(i, col_by_name[ref])
-            impact_cell = xl_rowcol_to_cell(i, col_by_name[calculated])
-            worksheet.write_formula(
-                impact_cell,
-                f'=IF({base_cell}=0, "", ({strat_cell}-{base_cell})/{base_cell})',
-                percent_format,
-            )
-        last = xl_rowcol_to_cell(row, col_by_name[calculated])
-        avg_cell = xl_rowcol_to_cell(row + 1, col_by_name[calculated])
-        worksheet.write_formula(avg_cell, f"=AVERAGE({first}:{last})", percent_format)
-        median_cell = xl_rowcol_to_cell(row + 2, col_by_name[calculated])
-        worksheet.write_formula(median_cell, f"=MEDIAN({first}:{last})", percent_format)
-        stdev_cell = xl_rowcol_to_cell(row + 3, col_by_name[calculated])
-        worksheet.write_formula(stdev_cell, f"=STDEV({first}:{last})", percent_format)
-        correlate_cell = xl_rowcol_to_cell(row + 4, col_by_name[calculated])
+    base = f"{metric} (basic)"
+    ref = f"{metric} (opt)"
+    calculated = f"{metric} Impact (opt vs basic)"
+    first = xl_rowcol_to_cell(1, col_by_name[calculated])
+    for i in range(1, row + 1):
+        base_cell = xl_rowcol_to_cell(i, col_by_name[base])
+        strat_cell = xl_rowcol_to_cell(i, col_by_name[ref])
+        impact_cell = xl_rowcol_to_cell(i, col_by_name[calculated])
         worksheet.write_formula(
-            correlate_cell, f"=CORREL({first}:{last},{first_se_ratio}:{last_se_ratio})"
-        )  # r, not %
+            impact_cell,
+            f'=IF({base_cell}=0, "", ({strat_cell}-{base_cell})/{base_cell})',
+            percent_format,
+        )
+    last = xl_rowcol_to_cell(row, col_by_name[calculated])
+    avg_cell = xl_rowcol_to_cell(row + 1, col_by_name[calculated])
+    worksheet.write_formula(avg_cell, f"=AVERAGE({first}:{last})", percent_format)
+    median_cell = xl_rowcol_to_cell(row + 2, col_by_name[calculated])
+    worksheet.write_formula(median_cell, f"=MEDIAN({first}:{last})", percent_format)
+    stdev_cell = xl_rowcol_to_cell(row + 3, col_by_name[calculated])
+    worksheet.write_formula(stdev_cell, f"=STDEV({first}:{last})", percent_format)
+    correlate_cell = xl_rowcol_to_cell(row + 4, col_by_name[calculated])
+    worksheet.write_formula(
+        correlate_cell, f"=CORREL({first}:{last},{first_se_ratio}:{last_se_ratio})"
+    )  # r, not %
 
 workbook.close()
 

@@ -1,0 +1,63 @@
+# Basics
+DESIGN_NAME: jpeg_encoder
+VERILOG_FILES:
+  - dir::src/jpeg_encoder.v
+  - dir::src/dct.v
+  - dir::src/dct_mac.v
+  - dir::src/dctu.v
+  - dir::src/dctub.v
+  - dir::src/div_su.v
+  - dir::src/div_uu.v
+  - dir::src/fdct.v
+  - dir::src/jpeg_qnr.v
+  - dir::src/jpeg_rle.v
+  - dir::src/jpeg_rle1.v
+  - dir::src/jpeg_rzs.v
+  - dir::src/zigzag.v
+VERILOG_INCLUDE_DIRS:
+  - dir::src
+  - dir::src/include
+CLOCK_PERIOD: 5.5
+CLOCK_PORT: clk
+PNR_SDC_FILE: dir::src/impl.sdc
+SIGNOFF_SDC_FILE: dir::src/signoff.sdc
+
+# Synthesis
+SYNTH_WRITE_NOATTR: false
+ERROR_ON_SYNTH_CHECKS: false
+
+# PDN
+PDN_VOFFSET: 5
+PDN_HOFFSET: 5
+PDN_VWIDTH: 2
+PDN_HWIDTH: 2
+PDN_VPITCH: 30
+PDN_HPITCH: 30
+PDN_SKIPTRIM: true
+
+# Technology-Specific Configs
+pdk::sky130*:
+  FP_CORE_UTIL: 45
+  CLOCK_PERIOD: 5.5
+
+# DFT
+DFT_TV_TEST_THREADS: 1
+DFT_TEST_MODE_WIRE: tm
+DFT_TEST_CLOCK_WIRE: clk
+DFT_SCAN_IN_PATTERN: sci
+DFT_SCAN_OUT_PATTERN: sco
+DFT_SCAN_ENABLE_PATTERN: sce
+scl::sky130_fd_sc_hd:
+  DFT_JSON_MAPPING: dir::../../tech/sky130_fd_sc_hd_mapping.json
+scl::gf180mcu_fd_sc_mcu7t5v0:
+  DFT_JSON_MAPPING: dir::../../tech/gf180mcu_fd_sc_mcu7t5v0_mapping.json
+DFT_BSCAN_EXCLUDE_IO:
+  - clk
+  - tm
+  - "!rst"
+  - sce
+  - sci
+  - sco
+
+meta:
+  flow: DifettoPNR

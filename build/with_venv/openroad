@@ -1,0 +1,3 @@
+#!/bin/sh
+export PYTHONPATH=/home/qhmoso/work/difetto/venv/lib/python3.13/site-packages
+exec /home/qhmoso/work/my_openroad_fork/build/bin/openroad "$@"
